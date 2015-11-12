@@ -1,0 +1,109 @@
+*** Settings ***
+Test Teardown
+Resource          Gserieskeywords.txt
+Library           String
+Library           Collections
+Variables         Input_file.py
+Library           genericfun.py
+
+*** Variables ***
+${TestCaseSheet}    C:\\ROBOTSERVER_FILES\\OUPUT_FILE\\Polycom.xls
+
+*** Test Cases ***
+TelnetBasicSIPP2PNoServerMarsToSaturn
+    [Setup]
+    clearLog    Polycom.log
+    clearLog    ${LogForBug}
+    Set Global variable    ${result}    Pass
+    Set Global variable    ${Logger}    None
+    ${f1_logger}=    createlogger
+    Set Global variable    ${Logger}    ${f1_logger}
+    Set Global variable    ${telnet1}    0
+    Set Global variable    ${telnet2}    0
+    updatelogger    ${f1_logger}    ${tc4} Execution started\n
+    ${telnetid1}=    Log into Gseries    ${DUT1}
+    Set Global variable    ${telnet1}    ${telnetid1}
+    Run Keyword unless    '${telnetid1}'=='1'    updateFail    telnet to ${DUT1} Failed    ${f1_logger}
+    Run Keyword If    '${telnetid1}'=='1'    updatePass    telnet to ${DUT1} Pass    ${f1_logger}
+    ${ telnetid2}=    Log into Gseries    ${DUT2}
+    Run Keyword unless    '${telnetid2}'=='2'    updateFail    telnet to ${DUT2} Failed    ${f1_logger}
+    Run Keyword If    '${telnetid2}'=='2'    updatePass    telnet to ${DUT2} Passed    ${f1_logger}
+    Set Global variable    ${telnet2}    ${telnetid2}
+    ${Response1}=    Run Keyword And Return Status    Enablesip    ${telnetid1}
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    Enable SIP \ in ${DUT1} Failed    ${f1_logger}
+    Run Keyword If    '${Response1} '== 'True '    updatePass    Enable SIP \ in ${DUT1} Passed    ${f1_logger}
+    ${Response1}=    Run Keyword And Return Status    Enablesip    ${ telnetid2}
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    Enable SIP in ${DUT2} Failed    ${f1_logger}
+    Run Keyword If    '${Response1}'=='True'    updatePass    Enable SIP \ in ${DUT2} Passed    ${f1_logger}
+    ${Response1}=    Run Keyword And Return Status    Enable autoanswer Gseries    ${telnetid1}
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    Enabling Autoanswer in ${DUT1} Failed    ${f1_logger}
+    Run Keyword If    '${Response1}'=='True'    updatePass    Enabling Autoanswer in ${DUT1} Passed    ${f1_logger}
+    ${Response1}=    Run Keyword And Return Status    Unregister gseries to gatekeeper    ${telnetid1}
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    Unregister gseries to gatekeeperr in ${DUT1} Failed    ${f1_logger}
+    Run Keyword If    '${Response1}'=='True'    updatePass    Unregister gseries to gatekeeper in ${DUT1} Passed    ${f1_logger}
+    ${Response1}=    Run Keyword And Return Status    Unregister gseries to gatekeeper    ${ telnetid2}
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    Unregister gseries to gatekeeperr in ${DUT2} Failed    ${f1_logger}
+    Run Keyword If    '${Response1}'=='True'    updatePass    Unregister gseries to gatekeeper in ${DUT2} Passed    ${f1_logger}
+    ${Response1}=    Run Keyword And Return Status    VerifyCallIsConnected    ${telnetid1}    system is not in a call
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    VerifyCallIsConnected in ${DUT1} \ Failed    ${f1_logger}
+    Run Keyword If    '${Response1}'=='True'    updatePass    VerifyCallIsConnected in ${DUT1} Passed    ${f1_logger}
+    ${Response1}=    Run Keyword And Return Status    VerifyCallIsConnected    ${ telnetid2}    system is not in a call
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    VerifyCallIsConnected in ${DUT2} \ Failed    ${f1_logger}
+    Run Keyword If    '${Response1}'=='True'    updatePass    VerifyCallIsConnected in ${DUT2} Passed    ${f1_logger}
+    ${Response1}=    Run Keyword And Return Status    Place a p2p call    ${ telnetid2}    ${SPEEDLIST}    ${DUT1}    ${CALLTYPE2}
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    Place a p2p call in \ \ in ${DUT2} \ Failed    ${f1_logger}
+    Run Keyword If    '${Response1}'=='True'    updatePass    Place a p2p call in \ ${DUT2} Passed    ${f1_logger}
+    ${Response1}=    Run Keyword And Return Status    VerifyCallIsConnected    ${ telnetid2}    connected
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    VerifyCallIsConnected in ${DUT2} \ Failed    ${f1_logger}
+    Run Keyword If    '${Response1}'=='True'    updatePass    VerifyCallIsConnected in ${DUT2} Passed    ${f1_logger}
+    ${Response1}=    Run Keyword And Return Status    VerifyCallIsConnected    ${telnetid1}    connected
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    VerifyCallIsConnected in ${DUT1} \ Failed    ${f1_logger}
+    Run Keyword If    '${Response1}'=='True'    updatePass    VerifyCallIsConnected in ${DUT1} Passed    ${f1_logger}
+    ${Response1}=    Run Keyword And Return Status    HangupCall    ${ telnetid2}
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    Hangup call in in ${DUT2} \ Failed    ${f1_logger}
+    Run Keyword If    '${Response1}'=='True'    updatePass    Hangup call in ${DUT2} Passed    ${f1_logger}
+    ${Response1}=    Run Keyword And Return Status    VerifyCallIsConnected    ${telnetid1}    system is not in a call
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    VerifyCallIsConnected in ${DUT1} \ Failed    ${f1_logger}
+    Run Keyword If    '${Response1}'=='True'    updatePass    VerifyCallIsConnected in ${DUT1} Passed    ${f1_logger}
+    ${Response1}=    Run Keyword And Return Status    VerifyCallIsConnected    ${ telnetid2}    system is not in a call
+    Run Keyword unless    '${Response1} '== 'True '    updateFail    VerifyCallIsConnected in ${DUT2} \ Failed    ${f1_logger}
+    Run Keyword If    '${Response1}'=='True'    updatePass    VerifyCallIsConnected in ${DUT2} Passed    ${f1_logger}
+    Comment    ${Response1}=    Run Keyword And Return Status    DisableSip    ${ telnetid2}
+    Comment    Run Keyword unless    '${Response1} '== 'True '    updateFail    DisableH323in ${DUT2} \ Failed    ${f1_logger}
+    Comment    Run Keyword If    '${Response1}'=='True'    updatePass    DisableH323 in ${DUT2} Passed    ${f1_logger}
+    Comment    ${Response1}=    Run Keyword And Return Status    DisableSip    ${telnetid1}
+    Comment    Run Keyword unless    '${Response1} '== 'True '    updateFail    DisableH323in ${DUT1} \ Failed    ${f1_logger}
+    Comment    Run Keyword If    '${Response1}'=='True'    updatePass    DisableH323 in ${DUT1} Passed    ${f1_logger}
+    Comment    ${Response1}=    Run Keyword And Return Status    DisableAutoanswerGseries    ${telnetid1}
+    Comment    Run Keyword unless    '${Response1} '== 'True '    updateFail    Disable Autoanswer \ in ${DUT1} Failed    ${f1_logger}
+    Comment    Run Keyword If    '${Response1}'=='True'    updatePass    Disable Autoanswer in ${DUT1} Passed    ${f1_logger}
+    Comment    updatelogger    ${f1_logger}    Test \ case Status : ${result}
+    Comment    ${loglocLocal} =    Catenate    SEPARATOR=    ${LogFileLoc}    ${tc4}    .txt
+    Comment    copylog    Polycom.log    ${loglocLocal}
+    Comment    UpdateTcStatus    ${TestCaseSheet}    ${tc4}    ${result}
+    [Teardown]    UpdateExecutionResult
+
+*** Keywords ***
+updateFail
+    [Arguments]    ${error}    ${logger}
+    updatelogger    ${logger}    ${error}
+    set global variable    ${result}    Fail
+    updatelogger    ${f1_logger}    Test \ case Status : ${result}
+    FAIL    Test case failed
+
+updatePass
+    [Arguments]    ${error}    ${logger}
+    updatelogger    ${logger}    ${error}
+    Comment    Globalvariable1    ${result}    Pass
+
+UpdateExecutionResult
+    Comment    Set Timeout    3 seconds
+    HangupCall2    ${ telnet1}
+    HangupCall2    ${ telnet2}
+    Comment    Set Client Configuration    timeout=3 seconds
+    Close All Connections
+    updatelogger    ${Logger}    Test \ case Status : ${result}
+    ${loglocLocal} =    Catenate    SEPARATOR=    ${LogFileLoc}    ${tc4}    .txt
+    copylog    Polycom.log    ${loglocLocal}
+    copylog    Polycom.log    ${LogForBug}
+    Comment    UpdateTcStatus    ${TestCaseSheet}    ${tc4}    ${result}

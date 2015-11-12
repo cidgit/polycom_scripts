@@ -1,0 +1,5 @@
+2015-11-11 09:20:41,631 - 62 - INFO     - SIPP2P_NoServerNoIp Execution started
+
+2015-11-11 09:20:41,658 - 62 - INFO     - telnet to 10.75.15.108 Pass
+2015-11-11 09:21:16,674 - 62 - INFO     - telnet to 10.14.12.58  FAIL
+2015-11-11 09:21:16,676 - 62 - INFO     - Test  case Status : FAIL

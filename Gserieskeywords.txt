@@ -1,0 +1,349 @@
+*** Settings ***
+Library           Telnet
+
+*** Keywords ***
+LogIntoGseries
+    [Arguments]    ${gseriesip}    ${gseriesportnumber}=24    ${gseriestimeout}=50s
+    [Documentation]    This keywords opens a telnet connection to Gseries
+    ...
+    ...    it has 3 arguments
+    ...
+    ...    ${gseriesip}=IP of gseries
+    ...
+    ...    ${gseriesportnumber} = gseries port number to be used for telnet connection
+    ...
+    ...    ${gseriestimeout}=wait time of telnet response
+    ${telnetid1}=    Open Connection    ${gseriesip}    \    ${gseriesportnumber}    ${gseriestimeout}
+    log    "id$$$$$$$$$$" ${telnetid1}
+    write    "/r"
+    write    "/r"
+    [Return]    ${telnetid1}
+
+LogoutGSeries
+    [Documentation]    This keyword closed the telnet connection to the gseries
+    Close All Connections
+
+EnableAutoanswerGseries
+    [Arguments]    ${gserieshandle}
+    [Documentation]    This keyword enables autoanswer mode in gseries
+    ...
+    ...    ${gserieshandle}=index number of the gseries telnet connection
+    Switch Connection    ${gserieshandle}
+    write    autoanswer yes
+    sleep    4
+    ${outputofautoanswer}=    Read Until    autoanswer yes
+    Should Contain    ${outputofautoanswer}    autoanswer yes
+    [Return]    ${outputofautoanswer}
+
+Disconnectcall
+    [Arguments]    ${gserieshandle}
+    [Documentation]    This keyword disconnect call in gseries.
+    ...
+    ...    ${gserieshandle}=index number of the gseries telnet connection
+    Switch Connection    ${gserieshandle}
+    write    hangup all
+    ${outputofdisconnect}=    Read Until Regexp    (hanging up all|system is not in a call)
+    Should Match Regexp    ${outputofdisconnect}    (hanging up all|system is not in a call)
+    sleep    5s
+
+PlaceAp2pCall
+    [Arguments]    ${gserieshandle}    ${callrate}    ${gseriesip}    ${CallType}
+    [Documentation]    This keyword places a p2p call
+    ...
+    ...    ${gserieshandle}=index number of the gseries telnet connection from where the call should be made
+    ...
+    ...    ${callrate} = speed of the call
+    ...
+    ...    ${gseriesip2}=ip \ of gseries where call needs to be placed
+    ...
+    ...    ${gserieshandle2}=index number of other gseries which receives call
+    Switch Connection    ${gserieshandle}
+    ${console1}    Write    dial manual ${callrate} ${gseriesip} ${CallType}
+    sleep    30
+
+RegisterGseriesToSipServer
+    [Arguments]    ${gserieshandle}    ${sip_registrar_ip}    ${sip_username}    ${sip_password}
+    [Documentation]    This keyword registers Gseries to sip server
+    ...
+    ...    ${gserieshandle} - index number of the gseries telnet connection
+    ...    ${sip_registrar_ip} - sip registrar server ip
+    ...    ${sip_username} - sip user name
+    ...    ${sip_password} - sip password
+    Switch Connection    ${gserieshandle}
+    write    systemsetting sipregistrarserver ${sip_registrar_ip}
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipregistrarserver ${sip_registrar_ip}
+    write    systemsetting sipproxyserver ${sip_registrar_ip}
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipproxyserver ${sip_registrar_ip}
+    write    systemsetting sipaccountname ${sip_username}
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipaccountname ${sip_username}
+    write    systemsetting sipusername ${sip_username}
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipusername ${sip_username}
+    write    systemsetting sipusername ${sip_username}
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipusername ${sip_username}
+    write    systemsetting sippassword ${sip_password}
+    ${outputoftelnetcommand}=    Read Until    systemsetting sippassword ${sip_password}
+    write    systemsetting sipenable true
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipenable true
+    write    systemsetting get sipenable
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipenable true
+    Should Contain    ${outputoftelnetcommand}    systemsetting sipenable true
+    write    "/r"
+    set prompt    ->
+
+UnregisterGseriesToSipServer
+    [Arguments]    ${gserieshandle}
+    [Documentation]    This keyword unregisters GSeriesto sip server
+    ...
+    ...    ${gserieshandle} - index number of the gseries telnet connection
+    Switch Connection    ${gserieshandle}
+    write    systemsetting sipregistrarserver ""
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipregistrarserver ""
+    write    systemsetting sipproxyserver ""
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipproxyserver ""
+    write    systemsetting sipaccountname ""
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipaccountname ""
+    write    systemsetting sipusername ""
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipusername ""
+    write    systemsetting sippassword ""
+    ${outputoftelnetcommand}=    Read Until    systemsetting sippassword ""
+    write    "/r"
+    set prompt    ->
+    sleep    3
+
+VerifyCallIsConnected
+    [Arguments]    ${gserieshandle}    ${Check_Status}
+    [Documentation]    This keyword verifies call connected status
+    ...
+    ...    ${gserieshandle} = index number of the gseries telnet connection
+    Switch Connection    ${gserieshandle}
+    sleep    2
+    write    callinfo all
+    ${outputofautoanswer}=    Read Until    ${Check_Status}
+    Should Contain    ${outputofautoanswer}    ${Check_Status}
+    write    "/r"
+    set prompt    >
+    sleep    2
+    [Return]    ${outputofautoanswer}
+
+RegisterGseriesTo gatekeeper
+    [Arguments]    ${gserieshandle}    ${gatekeeperip}
+    Switch Connection    ${gserieshandle}
+    write    usegatekeeper specify
+    ${outputofresponse}=    Read Until    usegatekeeper specify
+    Should Contain    ${outputofresponse}    usegatekeeper specify
+    write    gatekeeperip set ${gatekeeperip}
+    ${outputofresponse}=    Read Until    gatekeeperip ${gatekeeperip}
+    Should Contain    ${outputofresponse}    gatekeeperip ${gatekeeperip}
+    sleep    65s
+    write    gatekeeperip get
+    ${outputofresponse}=    Read Until    gatekeeperip ${gatekeeperip}
+    Should Contain    ${outputofresponse}    gatekeeperip ${gatekeeperip}
+    sleep    5
+
+UnregisterGseriesToGatekeeper
+    [Arguments]    ${gserieshandle}
+    Switch Connection    ${gserieshandle}
+    write    usegatekeeper off
+    ${outputofresponse}=    Read Until    usegatekeeper off
+    Should Contain    ${outputofresponse}    usegatekeeper off
+    write    "/r"
+    sleep    1s
+    [Return]    ${outputofresponse}
+
+CheckCallStatus
+    [Arguments]    ${Check_Status}
+    sleep    15s
+    write    callinfo all
+    set prompt    ${Check_Status}
+    write    "/r"
+    set prompt    >
+    sleep    10s
+
+HangupCall
+    [Arguments]    ${gserieshandle}
+    Switch Connection    ${gserieshandle}
+    write    hangup all
+    ${outputofautoanswer}=    Read Until    hanging up all
+    Should Contain    ${outputofautoanswer}    hanging up all
+    sleep    10
+    write    "/r"
+    set prompt    >
+    [Return]    ${outputofautoanswer}
+
+EnableSip
+    [Arguments]    ${gserieshandle}
+    [Documentation]    This keyword registers Gseries to sip server
+    ...
+    ...    ${gserieshandle} - index number of the gseries telnet connection
+    ...    ${sip_registrar_ip} - sip registrar server ip
+    ...    ${sip_username} - sip user name
+    ...    ${sip_password} - sip password
+    Switch Connection    ${gserieshandle}
+    write    systemsetting sipenable True
+    sleep    2
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipenable True
+    write    systemsetting get sipenable
+    sleep    5
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipenable True
+    Should Contain    ${outputoftelnetcommand}    systemsetting sipenable True
+    write    "/r"
+    set prompt    >
+    sleep    1s
+
+EnableH323
+    [Arguments]    ${gserieshandle}
+    Switch Connection    ${gserieshandle}
+    write    systemsetting iph323enable True
+    sleep    2
+    ${outputoftelnetcommand}=    Read Until    systemsetting iph323enable True
+    Should Contain    ${outputoftelnetcommand}    systemsetting iph323enable True
+    write    systemsetting get iph323enable
+    sleep    5
+    ${outputoftelnetcommand}=    Read Until    systemsetting iph323enable True
+    Should Contain    ${outputoftelnetcommand}    systemsetting iph323enable True
+    sleep    5s
+    write    "/r"
+    set prompt    >
+    sleep    1s
+    [Return]    ${outputoftelnetcommand}
+
+NetstatCommand
+    [Arguments]    ${gserieshandle}    ${SITENO}    ${RECEIVE_TRANSMIT_PROTOCOL}    ${DUT1NETSTATSVALUE1}    ${DUT1NETSTATSVALUE2}
+    sleep    15s
+    Switch Connection    ${gserieshandle}
+    write    netstats ${SITENO}
+    ${outputofautoanswer}=    Read Until    ${RECEIVE_TRANSMIT_PROTOCOL}
+    Should Contain    ${outputofautoanswer}    ${DUT1NETSTATSVALUE1}
+    Should Contain    ${outputofautoanswer}    ${DUT1NETSTATSVALUE2}
+    sleep    5
+    write    "/r"
+    set prompt    >
+
+PlayContent
+    [Arguments]    ${gserieshandle}
+    Switch Connection    ${gserieshandle}
+    run keyword if    '${SOURCE_IS_CONNECTED}'=='YES'    PlayVCbutton
+    sleep    5
+
+PlayVCbutton
+    log    ${CONTENT} **3
+    write    vcbutton play ${CONTENT}
+    sleep    5
+    write    vcbutton get
+    set prompt    vcbutton play    true
+    sleep    5
+
+DisableH323
+    [Arguments]    ${gserieshandle}
+    Switch Connection    ${gserieshandle}
+    write    systemsetting iph323enable False
+    sleep    2
+    ${outputoftelnetcommand}=    Read Until    systemsetting iph323enable False
+    Should Contain    ${outputoftelnetcommand}    systemsetting iph323enable False
+    write    systemsetting get iph323enable
+    sleep    5
+    ${outputoftelnetcommand}=    Read Until    systemsetting iph323enable False
+    Should Contain    ${outputoftelnetcommand}    systemsetting iph323enable False
+    sleep    2
+    write    "/r"
+    set prompt    >
+    sleep    1s
+    [Return]    ${outputoftelnetcommand}
+
+DisableSip
+    [Arguments]    ${gserieshandle}
+    [Documentation]    This keyword registers Gseries to sip server
+    ...
+    ...    ${gserieshandle} - index number of the gseries telnet connection
+    ...    ${sip_registrar_ip} - sip registrar server ip
+    ...    ${sip_username} - sip user name
+    ...    ${sip_password} - sip password
+    Switch Connection    ${gserieshandle}
+    write    systemsetting sipenable False
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipenable False
+    write    systemsetting get sipenable
+    ${outputoftelnetcommand}=    Read Until    systemsetting sipenable False
+    Should Contain    ${outputoftelnetcommand}    systemsetting sipenable False
+    write    "/r"
+    set prompt    >
+    sleep    1s
+
+DisableAutoanswerGseries
+    [Arguments]    ${gserieshandle}
+    [Documentation]    This keyword enables autoanswer mode in gseries
+    ...
+    ...    ${gserieshandle}=index number of the gseries telnet connection
+    Switch Connection    ${gserieshandle}
+    write    autoanswer no
+    sleep    5
+    ${outputofautoanswer}=    Read Until    autoanswer no
+    Should Contain    ${outputofautoanswer}    autoanswer no
+    Comment    runkeyword if    '${outputofautoanswer}'=='autoanswer no'    updatePass_old    ${PASS}    ELSE    updateFail
+    ...    ${FAIL}
+    sleep    3
+    [Return]    ${outputofautoanswer}
+
+TestVerifyCallIsConnected
+    [Arguments]    ${gserieshandle}    ${Check_Status}
+    [Documentation]    This keyword verifies call connected status
+    ...
+    ...    ${gserieshandle} = index number of the gseries telnet connection
+    Switch Connection    ${gserieshandle}
+    sleep    10
+    write    status
+    set prompt    ${Check_Status}
+    write    "/r"
+    set prompt    >
+    sleep    10s
+
+updateFail
+    [Arguments]    ${FAIL}
+    Write Log    C:\\ROBOTSERVER_FILES\\logs\\TelnetBasicH323P2PNoGPMarstoMars.txt    Status - > Fail\n
+    Globalvariable1    ${tcStatus}    ${FAIL}
+    UpdateTcStatus    ${TestCaseSheet}    TelnetBasicH323P2PNoGPMarstoMars    ${tcStatus}
+
+checkstatus
+    [Arguments]    ${resultvalue}    ${response}
+    log    ${resultvalue}
+    log    ${response}
+    runkeyword if    '${resultvalue}'=='${response}'    updatePass_old    ${PASS}    ELSE    updateFail    ${FAIL}
+
+updateStatus
+    [Arguments]    ${Result}
+    Run Keyword if    '${Result}'=='True'    updatePass_old    ${PASS}
+    Comment    Run Keyword if    '${Result}'=='Fail'    Login
+    Run Keyword if    '${Result}'=='False'    StopExecution
+
+StopExecution
+    Globalvariable1    ${tcStatus}    FAIL
+    fail    Can not Proceed as last step was failed
+
+VerifyCallIsConnected_old
+    [Arguments]    ${gserieshandle}    ${Check_Status}
+    [Documentation]    This keyword verifies call connected status
+    ...
+    ...    ${gserieshandle} = index number of the gseries telnet connection
+    Switch Connection    ${gserieshandle}
+    sleep    20
+    write    callinfo all
+    set prompt    ${Check_Status}
+    write    "/r"
+    set prompt    >
+    sleep    10s
+
+HangupCall_old
+    [Arguments]    ${gserieshandle}
+    Switch Connection    ${gserieshandle}
+    write    hangup all
+    set prompt    hanging up all
+    sleep    30
+    write    "/r"
+    set prompt    ->
+
+HangupCall2
+    [Arguments]    ${gserieshandle}
+    Switch Connection    ${gserieshandle}
+    write    hangup all
+    sleep    5
+    write    "/r"
+    sleep    2

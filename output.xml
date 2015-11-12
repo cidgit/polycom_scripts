@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20151111 09:20:41.279" generator="Robot 2.8.4 (Python 2.7.9 on win32)">
+<suite source="E:\CIDD\Polycom\SIPP2P_NoServerNoIp.txt" id="s1" name="SIPP2P NoServerNoIp">
+<test id="s1-t1" name="SIPP2P_NoServerNoIp">
+<kw type="kw" name="genericfun.Clear Log">
+<doc></doc>
+<arguments>
+<arg>Polycom.log</arg>
+</arguments>
+<status status="PASS" endtime="20151111 09:20:41.592" starttime="20151111 09:20:41.592"></status>
+</kw>
+<kw type="kw" name="genericfun.Clear Log">
+<doc></doc>
+<arguments>
+<arg>${LogForBug}</arg>
+</arguments>
+<status status="PASS" endtime="20151111 09:20:41.593" starttime="20151111 09:20:41.592"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Set Global Variable">
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<arguments>
+<arg>${result}</arg>
+<arg>Pass</arg>
+</arguments>
+<msg timestamp="20151111 09:20:41.593" level="INFO">${result} = Pass</msg>
+<status status="PASS" endtime="20151111 09:20:41.593" starttime="20151111 09:20:41.593"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Set Global Variable">
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<arguments>
+<arg>${Logger}</arg>
+<arg>None</arg>
+</arguments>
+<msg timestamp="20151111 09:20:41.594" level="INFO">${Logger} = None</msg>
+<status status="PASS" endtime="20151111 09:20:41.594" starttime="20151111 09:20:41.593"></status>
+</kw>
+<kw type="kw" name="${f1_logger} = genericfun.Createlogger">
+<doc></doc>
+<arguments>
+</arguments>
+<msg timestamp="20151111 09:20:41.630" level="INFO">${f1_logger} = &lt;logging.Logger object at 0x01D9B210&gt;</msg>
+<status status="PASS" endtime="20151111 09:20:41.630" starttime="20151111 09:20:41.594"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Set Global Variable">
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<arguments>
+<arg>${Logger}</arg>
+<arg>${f1_logger}</arg>
+</arguments>
+<msg timestamp="20151111 09:20:41.631" level="INFO">${Logger} = &lt;logging.Logger object at 0x01D9B210&gt;</msg>
+<status status="PASS" endtime="20151111 09:20:41.631" starttime="20151111 09:20:41.630"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Set Global Variable">
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<arguments>
+<arg>${telnet1}</arg>
+<arg>0</arg>
+</arguments>
+<msg timestamp="20151111 09:20:41.631" level="INFO">${telnet1} = 0</msg>
+<status status="PASS" endtime="20151111 09:20:41.631" starttime="20151111 09:20:41.631"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Set Global Variable">
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<arguments>
+<arg>${telnet2}</arg>
+<arg>0</arg>
+</arguments>
+<msg timestamp="20151111 09:20:41.631" level="INFO">${telnet2} = 0</msg>
+<status status="PASS" endtime="20151111 09:20:41.631" starttime="20151111 09:20:41.631"></status>
+</kw>
+<kw type="kw" name="genericfun.Updatelogger">
+<doc></doc>
+<arguments>
+<arg>${f1_logger}</arg>
+<arg>${tc5} Execution started\n</arg>
+</arguments>
+<msg timestamp="20151111 09:20:41.632" level="INFO">SIPP2P_NoServerNoIp Execution started
+</msg>
+<status status="PASS" endtime="20151111 09:20:41.632" starttime="20151111 09:20:41.632"></status>
+</kw>
+<kw type="kw" name="${telnetid1} = Gserieskeywords.LogIntoGseries">
+<doc>This keywords opens a telnet connection to Gseries</doc>
+<arguments>
+<arg>${DUT1}</arg>
+</arguments>
+<kw type="kw" name="${telnetid1} = Telnet.Open Connection">
+<doc>Opens a new Telnet connection to the given host and port.</doc>
+<arguments>
+<arg>${gseriesip}</arg>
+<arg></arg>
+<arg>${gseriesportnumber}</arg>
+<arg>${gseriestimeout}</arg>
+</arguments>
+<msg timestamp="20151111 09:20:41.634" level="INFO">Opening connection to 10.75.15.108:24 with prompt: None</msg>
+<msg timestamp="20151111 09:20:41.638" level="INFO">${telnetid1} = 1</msg>
+<status status="PASS" endtime="20151111 09:20:41.638" starttime="20151111 09:20:41.634"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Log">
+<doc>Logs the given message with the given level.</doc>
+<arguments>
+<arg>"id$$$$$$$$$$" ${telnetid1}</arg>
+</arguments>
+<msg timestamp="20151111 09:20:41.638" level="INFO">"id$$$$$$$$$$" 1</msg>
+<status status="PASS" endtime="20151111 09:20:41.638" starttime="20151111 09:20:41.638"></status>
+</kw>
+<kw type="kw" name="Telnet.Write">
+<doc>Writes the given text plus a newline into the connection.</doc>
+<arguments>
+<arg>"/r"</arg>
+</arguments>
+<msg timestamp="20151111 09:20:41.654" level="INFO">"/r"</msg>
+<status status="PASS" endtime="20151111 09:20:41.654" starttime="20151111 09:20:41.639"></status>
+</kw>
+<kw type="kw" name="Telnet.Write">
+<doc>Writes the given text plus a newline into the connection.</doc>
+<arguments>
+<arg>"/r"</arg>
+</arguments>
+<status status="PASS" endtime="20151111 09:20:41.657" starttime="20151111 09:20:41.655"></status>
+</kw>
+<msg timestamp="20151111 09:20:41.657" level="INFO">${telnetid1} = 1</msg>
+<status status="PASS" endtime="20151111 09:20:41.657" starttime="20151111 09:20:41.633"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Set Global Variable">
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<arguments>
+<arg>${telnet1}</arg>
+<arg>${telnetid1}</arg>
+</arguments>
+<msg timestamp="20151111 09:20:41.657" level="INFO">${telnet1} = 1</msg>
+<status status="PASS" endtime="20151111 09:20:41.657" starttime="20151111 09:20:41.657"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Run Keyword Unless">
+<doc>Runs the given keyword with the given arguments, if `condition` is false.</doc>
+<arguments>
+<arg>'${telnetid1}'=='1'</arg>
+<arg>updateFail</arg>
+<arg>telnet to ${DUT1} Failed</arg>
+<arg>${f1_logger}</arg>
+</arguments>
+<status status="PASS" endtime="20151111 09:20:41.658" starttime="20151111 09:20:41.657"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Run Keyword If">
+<doc>Runs the given keyword with the given arguments, if `condition` is true.</doc>
+<arguments>
+<arg>'${telnetid1}'=='1'</arg>
+<arg>updatePass</arg>
+<arg>telnet to ${DUT1} Pass</arg>
+<arg>${f1_logger}</arg>
+</arguments>
+<kw type="kw" name="updatePass">
+<doc></doc>
+<arguments>
+<arg>telnet to ${DUT1} Pass</arg>
+<arg>${f1_logger}</arg>
+</arguments>
+<kw type="kw" name="genericfun.Updatelogger">
+<doc></doc>
+<arguments>
+<arg>${logger}</arg>
+<arg>${error}</arg>
+</arguments>
+<msg timestamp="20151111 09:20:41.660" level="INFO">telnet to 10.75.15.108 Pass</msg>
+<status status="PASS" endtime="20151111 09:20:41.660" starttime="20151111 09:20:41.659"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Comment">
+<doc>Displays the given messages in the log file as keyword arguments.</doc>
+<arguments>
+<arg>Globalvariable1</arg>
+<arg>${result}</arg>
+<arg>Pass</arg>
+</arguments>
+<status status="PASS" endtime="20151111 09:20:41.660" starttime="20151111 09:20:41.660"></status>
+</kw>
+<status status="PASS" endtime="20151111 09:20:41.660" starttime="20151111 09:20:41.658"></status>
+</kw>
+<status status="PASS" endtime="20151111 09:20:41.660" starttime="20151111 09:20:41.658"></status>
+</kw>
+<kw type="kw" name="${ telnetid2} = Gserieskeywords.LogIntoGseries">
+<doc>This keywords opens a telnet connection to Gseries</doc>
+<arguments>
+<arg>${DUT5}</arg>
+</arguments>
+<kw type="kw" name="${telnetid1} = Telnet.Open Connection">
+<doc>Opens a new Telnet connection to the given host and port.</doc>
+<arguments>
+<arg>${gseriesip}</arg>
+<arg></arg>
+<arg>${gseriesportnumber}</arg>
+<arg>${gseriestimeout}</arg>
+</arguments>
+<msg timestamp="20151111 09:20:41.662" level="INFO">Opening connection to 10.14.12.58:24 with prompt: None</msg>
+<msg timestamp="20151111 09:21:02.662" level="FAIL">error: [Errno 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond</msg>
+<status status="FAIL" endtime="20151111 09:21:02.662" starttime="20151111 09:20:41.661"></status>
+</kw>
+<status status="FAIL" endtime="20151111 09:21:02.662" starttime="20151111 09:20:41.661"></status>
+</kw>
+<kw type="teardown" name="UpdateExecutionResultcopy">
+<doc></doc>
+<arguments>
+</arguments>
+<kw type="kw" name="BuiltIn.Comment">
+<doc>Displays the given messages in the log file as keyword arguments.</doc>
+<arguments>
+<arg>Set Timeout</arg>
+<arg>3 seconds</arg>
+</arguments>
+<status status="PASS" endtime="20151111 09:21:02.664" starttime="20151111 09:21:02.664"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Run Keyword And Continue On Failure">
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<arguments>
+<arg>HangupCall2</arg>
+<arg>${ telnet1}</arg>
+</arguments>
+<kw type="kw" name="Gserieskeywords.HangupCall2">
+<doc></doc>
+<arguments>
+<arg>${ telnet1}</arg>
+</arguments>
+<kw type="kw" name="Telnet.Switch Connection">
+<doc>Switches between active connections using an index or an alias.</doc>
+<arguments>
+<arg>${gserieshandle}</arg>
+</arguments>
+<status status="PASS" endtime="20151111 09:21:02.667" starttime="20151111 09:21:02.666"></status>
+</kw>
+<kw type="kw" name="Telnet.Write">
+<doc>Writes the given text plus a newline into the connection.</doc>
+<arguments>
+<arg>hangup all</arg>
+</arguments>
+<msg timestamp="20151111 09:21:02.668" level="INFO">"/r"</msg>
+<status status="PASS" endtime="20151111 09:21:02.668" starttime="20151111 09:21:02.667"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Sleep">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>5</arg>
+</arguments>
+<msg timestamp="20151111 09:21:07.668" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" endtime="20151111 09:21:07.668" starttime="20151111 09:21:02.668"></status>
+</kw>
+<kw type="kw" name="Telnet.Write">
+<doc>Writes the given text plus a newline into the connection.</doc>
+<arguments>
+<arg>"/r"</arg>
+</arguments>
+<msg timestamp="20151111 09:21:07.668" level="INFO">Hi, my name is :     a</msg>
+<status status="PASS" endtime="20151111 09:21:07.669" starttime="20151111 09:21:07.668"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Sleep">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>2</arg>
+</arguments>
+<msg timestamp="20151111 09:21:09.669" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" endtime="20151111 09:21:09.669" starttime="20151111 09:21:07.669"></status>
+</kw>
+<status status="PASS" endtime="20151111 09:21:09.669" starttime="20151111 09:21:02.665"></status>
+</kw>
+<status status="PASS" endtime="20151111 09:21:09.669" starttime="20151111 09:21:02.665"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Run Keyword And Continue On Failure">
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<arguments>
+<arg>HangupCall2</arg>
+<arg>${ telnet2}</arg>
+</arguments>
+<kw type="kw" name="Gserieskeywords.HangupCall2">
+<doc></doc>
+<arguments>
+<arg>${ telnet2}</arg>
+</arguments>
+<kw type="kw" name="Telnet.Switch Connection">
+<doc>Switches between active connections using an index or an alias.</doc>
+<arguments>
+<arg>${gserieshandle}</arg>
+</arguments>
+<msg timestamp="20151111 09:21:09.671" level="FAIL">Non-existing index or alias '0'.</msg>
+<status status="FAIL" endtime="20151111 09:21:09.671" starttime="20151111 09:21:09.670"></status>
+</kw>
+<kw type="kw" name="Telnet.Write">
+<doc>Writes the given text plus a newline into the connection.</doc>
+<arguments>
+<arg>hangup all</arg>
+</arguments>
+<msg timestamp="20151111 09:21:09.672" level="INFO">Here is what I know about myself:</msg>
+<status status="PASS" endtime="20151111 09:21:09.672" starttime="20151111 09:21:09.671"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Sleep">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>5</arg>
+</arguments>
+<msg timestamp="20151111 09:21:14.672" level="INFO">Slept 5 seconds</msg>
+<status status="PASS" endtime="20151111 09:21:14.672" starttime="20151111 09:21:09.672"></status>
+</kw>
+<kw type="kw" name="Telnet.Write">
+<doc>Writes the given text plus a newline into the connection.</doc>
+<arguments>
+<arg>"/r"</arg>
+</arguments>
+<msg timestamp="20151111 09:21:14.672" level="INFO">Model:               HDX 7000 HD</msg>
+<status status="PASS" endtime="20151111 09:21:14.672" starttime="20151111 09:21:14.672"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Sleep">
+<doc>Pauses the test executed for the given time.</doc>
+<arguments>
+<arg>2</arg>
+</arguments>
+<msg timestamp="20151111 09:21:16.673" level="INFO">Slept 2 seconds</msg>
+<status status="PASS" endtime="20151111 09:21:16.673" starttime="20151111 09:21:14.672"></status>
+</kw>
+<status status="FAIL" endtime="20151111 09:21:16.673" starttime="20151111 09:21:09.669"></status>
+</kw>
+<status status="FAIL" endtime="20151111 09:21:16.674" starttime="20151111 09:21:09.669"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Comment">
+<doc>Displays the given messages in the log file as keyword arguments.</doc>
+<arguments>
+<arg>Set Client Configuration</arg>
+<arg>timeout=3 seconds</arg>
+</arguments>
+<status status="PASS" endtime="20151111 09:21:16.674" starttime="20151111 09:21:16.674"></status>
+</kw>
+<kw type="kw" name="Telnet.Close All Connections">
+<doc>Closes all open connections and empties the connection cache.</doc>
+<arguments>
+</arguments>
+<status status="PASS" endtime="20151111 09:21:16.675" starttime="20151111 09:21:16.674"></status>
+</kw>
+<kw type="kw" name="genericfun.Updatelogger">
+<doc></doc>
+<arguments>
+<arg>${Logger}</arg>
+<arg>telnet to 10.14.12.58 \ FAIL</arg>
+</arguments>
+<msg timestamp="20151111 09:21:16.676" level="INFO">telnet to 10.14.12.58  FAIL</msg>
+<status status="PASS" endtime="20151111 09:21:16.676" starttime="20151111 09:21:16.675"></status>
+</kw>
+<kw type="kw" name="genericfun.Updatelogger">
+<doc></doc>
+<arguments>
+<arg>${Logger}</arg>
+<arg>Test \ case Status : FAIL</arg>
+</arguments>
+<msg timestamp="20151111 09:21:16.676" level="INFO">Test  case Status : FAIL</msg>
+<status status="PASS" endtime="20151111 09:21:16.676" starttime="20151111 09:21:16.676"></status>
+</kw>
+<kw type="kw" name="${loglocLocal} = BuiltIn.Catenate">
+<doc>Catenates the given items together and returns the resulted string.</doc>
+<arguments>
+<arg>SEPARATOR=</arg>
+<arg>${LogFileLoc}</arg>
+<arg>${tc5}</arg>
+<arg>.txt</arg>
+</arguments>
+<msg timestamp="20151111 09:21:16.677" level="INFO">${loglocLocal} = C:\logs\SIPP2P_NoServerNoIp.txt</msg>
+<status status="PASS" endtime="20151111 09:21:16.677" starttime="20151111 09:21:16.677"></status>
+</kw>
+<kw type="kw" name="genericfun.Copylog">
+<doc></doc>
+<arguments>
+<arg>Polycom.log</arg>
+<arg>${loglocLocal}</arg>
+</arguments>
+<status status="PASS" endtime="20151111 09:21:16.700" starttime="20151111 09:21:16.677"></status>
+</kw>
+<kw type="kw" name="genericfun.Copylog">
+<doc></doc>
+<arguments>
+<arg>Polycom.log</arg>
+<arg>${LogForBug}</arg>
+</arguments>
+<status status="PASS" endtime="20151111 09:21:16.703" starttime="20151111 09:21:16.700"></status>
+</kw>
+<kw type="kw" name="BuiltIn.Comment">
+<doc>Displays the given messages in the log file as keyword arguments.</doc>
+<arguments>
+<arg>UpdateTcStatus</arg>
+<arg>${TestCaseSheet}</arg>
+<arg>${tc5}</arg>
+<arg>${result}</arg>
+</arguments>
+<status status="PASS" endtime="20151111 09:21:16.703" starttime="20151111 09:21:16.703"></status>
+</kw>
+<status status="FAIL" endtime="20151111 09:21:16.703" starttime="20151111 09:21:02.663">Non-existing index or alias '0'.</status>
+</kw>
+<doc></doc>
+<tags>
+</tags>
+<status status="FAIL" endtime="20151111 09:21:16.704" critical="yes" starttime="20151111 09:20:41.590">error: [Errno 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+
+Also teardown failed:
+Non-existing index or alias '0'.</status>
+</test>
+<doc></doc>
+<metadata>
+</metadata>
+<status status="FAIL" endtime="20151111 09:21:16.705" starttime="20151111 09:20:41.280"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="1" pass="0">Critical Tests</stat>
+<stat fail="1" pass="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="1" pass="0" id="s1" name="SIPP2P NoServerNoIp">SIPP2P NoServerNoIp</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
